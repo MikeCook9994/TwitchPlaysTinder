@@ -36,11 +36,13 @@
     "@angular/router": "^5.2.0",
     "@types/irc": "^0.3.32",
     "@types/puppeteer": "^0.13.9",
+    "@types/winston": "^2.3.8",
     "core-js": "^2.4.1",
-    "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19",
+    "irc": "^0.5.0",
     "puppeteer": "^0.13.0",
-    "irc": "^0.5.0"
+    "rxjs": "^5.5.6",
+    "winston": "^3.0.0-rc2",
+    "zone.js": "^0.8.19"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.3",
