@@ -41,8 +41,8 @@
     "irc": "^0.5.0",
     "puppeteer": "^0.13.0",
     "rxjs": "^5.5.6",
-    "winston": "^3.0.0-rc2",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.19",
+    "electron": "^1.8.3"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.3",
@@ -55,7 +55,6 @@
     "chai": "^4.1.2",
     "codelyzer": "^4.0.1",
     "cucumber": "^4.0.0",
-    "electron": "^1.8.3",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",
