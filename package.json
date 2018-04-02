@@ -1,7 +1,7 @@
 {
   "name": "twitch-plays-tinder",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "MIT",  
   "author": "MikeCook9994",
   "repository": {
     "type": "git",
@@ -14,15 +14,14 @@
   "main": "main.js",
   "scripts": {
     "ng": "ng",
-    "start": "webpack-dev-server --port=4200",
-    "build": "webpack",
-    "test": "karma start ./karma.conf.js",
+    "start": "ng serve",
+    "build": "ng build --prod",
+    "test": "ng test",
     "lint": "ng lint",
-    "e2e": "protractor ./protractor.conf.js",
+    "e2e": "ng e2e",
     "electron": "electron .",
     "electron-build": "ng build --prod && electron .",
-    "acceptance": "./node_modules/.bin/cucumber-js",
-    "pree2e": "webdriver-manager update --standalone false --gecko false --quiet"
+    "acceptance": "./node_modules/.bin/cucumber-js"
   },
   "private": true,
   "dependencies": {
@@ -35,15 +34,11 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
-    "@types/irc": "^0.3.32",
     "@types/puppeteer": "^0.13.9",
-    "@types/winston": "^2.3.8",
-    "bufferutil": "^3.0.3",
     "core-js": "^2.4.1",
     "electron": "^1.8.3",
     "puppeteer": "^0.13.0",
     "rxjs": "^5.5.6",
-    "utf-8-validate": "^4.0.0",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
@@ -67,26 +62,6 @@
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.5.3",
-    "webpack-dev-server": "~2.11.0",
-    "@angular-devkit/core": "0.3.2",
-    "@ngtools/webpack": "1.10.2",
-    "webpack": "~3.11.0",
-    "autoprefixer": "^7.2.3",
-    "file-loader": "^1.1.5",
-    "html-webpack-plugin": "^2.29.0",
-    "less-loader": "^4.0.5",
-    "postcss-import": "^11.0.0",
-    "postcss-loader": "^2.0.10",
-    "postcss-url": "^7.1.2",
-    "raw-loader": "^0.5.1",
-    "sass-loader": "^6.0.6",
-    "istanbul-instrumenter-loader": "^3.0.0",
-    "style-loader": "^0.19.1",
-    "stylus-loader": "^3.0.1",
-    "url-loader": "^0.6.2",
-    "circular-dependency-plugin": "^4.2.1",
-    "copy-webpack-plugin": "~4.4.1",
-    "uglifyjs-webpack-plugin": "^1.1.8"
+    "typescript": "~2.5.3"
   }
 }

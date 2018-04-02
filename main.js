@@ -1,10 +1,9 @@
-const { app, BrowserWindow } = require('electron')
-
-let window;
+const { app, BrowserWindow } = require('electron');
+const { spawn } = require('child_process');
 
 function createWindow() {
     // Create the browser windows
-    window = new BrowserWindow({
+    let window = new BrowserWindow({
         backgroundColor: '#ffffff',
         icon: `file://${__dirname}/dist/assests/logo.png`
     });

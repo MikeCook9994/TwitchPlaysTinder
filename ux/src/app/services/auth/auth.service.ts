@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { launch as OpenBrowser, Browser, Page } from 'puppeteer';
-
 import { TinderAuthInfo } from '../../models/tinderAuthInfo';
 
 @Injectable()
@@ -23,8 +21,6 @@ export class AuthService {
    * @memberof AuthService
    */
   public GetAuthInfo(email: string, password: string): Promise<TinderAuthInfo> {
-    return OpenBrowser()
-      .then((browser: Browser) => browser.newPage())
-      .then((page: Page) => null);
+    return null;
   }
 }
