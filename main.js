@@ -1,5 +1,5 @@
 const { app, BrowserWindow } = require('electron');
-const { spawn } = require('child_process');
+const child_process = require('child_process');
 
 function createWindow() {
     // Create the browser windows
@@ -8,7 +8,7 @@ function createWindow() {
         icon: `file://${__dirname}/dist/assests/logo.png`
     });
 
-    window.loadURL(`file://${__dirname}/dist/index.html`);
+    window.loadURL(`file://${__dirname}/ux/dist/index.html`);
 
     // Uncoment below to open the DevTools.
     // win.webContents.openDevTools();
@@ -35,3 +35,9 @@ app.on('activate', function() {
         createWindow();
     }
 });
+
+const server = child_process.spawn('node', ['./server/main.js']);
+
+server.stdout.on('data', (data) => { 
+    console.log(`stdout: ${data}`);
+})
