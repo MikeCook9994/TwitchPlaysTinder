@@ -1,6 +1,27 @@
 {
-  "name": "twitch-plays-tinder-ux",
-  "private": true,
+  "name": "twitch-plays-tinder",
+  "version": "0.0.0",
+  "description": "twitch plays tinder root package",
+  "author": "MikeCook9994",
+  "license": "MIT",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MikeCook9994/TwitchPlaysTinder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MikeCook9994/TwitchPlaysTinder/issues"
+  },
+  "homepage": "https://github.com/MikeCook9994/TwitchPlaysTinder#readme",
+  "scripts": {
+    "buid": "npm run build-electron & npm run build-ux;",
+    "build-electron": "tsc ./main.ts --outDir ./dist & tsc",
+    "build-ux": "ng build --prod ./ux --op ./dist",
+    "test": "ng test",
+    "e2e": "ng e2e ./ux",
+    "start": "electron ./dist/.",
+    "acceptance": "./node_modules/.bin/cucumber-js"
+  },
   "dependencies": {
     "@angular/animations": "^5.2.0",
     "@angular/common": "^5.2.0",
@@ -11,10 +32,8 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
-    "@types/puppeteer": "^0.13.9",
     "core-js": "^2.4.1",
     "electron": "^1.8.3",
-    "puppeteer": "^0.13.0",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
   },
