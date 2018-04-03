@@ -1,6 +1,11 @@
 const { app, BrowserWindow } = require('electron');
 const child_process = require('child_process');
 
+(() => {
+    registerElectronEventListeners();
+    const server = child_process.spawn('node', ['./server/main.js']);
+})();
+
 function createWindow() {
     // Create the browser windows
     let window = new BrowserWindow({
@@ -18,26 +23,21 @@ function createWindow() {
         win = null;
     });
 }
+function registerElectronEventListeners() {
+    app.on('ready', createWindow);
 
-app.on('ready', createWindow);
-
-// Quit when all windows are closed
-app.on('Window-all-closed', function() {
-    // On macOS specific close process
-    if(process.platform !== 'darwin') {
-        app.quit();
-    }
-});
-
-app.on('activate', function() {
-    //macOS specific close process
-    if(win === null) {
-        createWindow();
-    }
-});
-
-const server = child_process.spawn('node', ['./server/main.js']);
-
-server.stdout.on('data', (data) => { 
-    console.log(`stdout: ${data}`);
-})
+    // Quit when all windows are closed
+    app.on('Window-all-closed', function() {
+        // On macOS specific close process
+        if(process.platform !== 'darwin') {
+            app.quit();
+        }
+    });
+    
+    app.on('activate', function() {
+        //macOS specific close process
+        if(win === null) {
+            createWindow();
+        }
+    });
+}
