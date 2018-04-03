@@ -4,7 +4,6 @@
   "description": "twitch plays tinder root package",
   "author": "MikeCook9994",
   "license": "MIT",
-  "main": "./dist/main.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MikeCook9994/TwitchPlaysTinder.git"
@@ -14,8 +13,8 @@
   },
   "homepage": "https://github.com/MikeCook9994/TwitchPlaysTinder#readme",
   "scripts": {
-    "build": "tsc ./main.ts --outDir ./dist & tsc",
-    "start": "electron ./dist/."
+    "build": "tsc ./main.ts --outDir ./dist & tsc ./server/src/main.ts --outDir ./dist/server/src/",
+    "start": "electron ./dist/main.js"
   },
   "dependencies": {
     "electron": "^1.8.3"
