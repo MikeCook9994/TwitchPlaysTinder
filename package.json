@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/MikeCook9994/TwitchPlaysTinder#readme",
   "scripts": {
-    "build": "tsc ./main.ts --outDir ./dist & tsc ./server/src/main.ts --outDir ./dist/server/src/",
+    "build": "rm -r ./dist & tsc ./main.ts --outDir ./dist & tsc",
     "start": "electron ./dist/main.js"
   },
   "dependencies": {

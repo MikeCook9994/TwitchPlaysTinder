@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist",
+    },
+    "include": ["./**/*"],
+    "exclude": [
+        "./node_modules",
+        "./ux"
+    ]
+}

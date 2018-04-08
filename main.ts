@@ -37,7 +37,7 @@ import * as child_process from 'child_process';
     
     registerElectronEventListeners();
 
-    const server = child_process.spawn('node', ['./dist/server/src/main.js']);
+    const server = child_process.spawn('node', ['./dist/server/app/main.js']);
     server.stdout.on('data', (data) => { 
         console.log(`stdout: ${data}`);
     });
