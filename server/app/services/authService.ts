@@ -1,12 +1,12 @@
-import { Express, Response, Request, Application } from 'express';
+import { launch as openBrowser, Browser, Page } from 'puppeteer';
+
+import { TinderAuthInfo } from '../models/tinderAuthInfo';
 
 export class AuthService {
-    public static ConfigureServer(server: Application): void {
-        server.get('/auth', (req: Request, res: Response) => {
-            res.send({
-                'id': 'hello',
-                'token': 'world'
-            })
-        });
+    public static GetAuthInfo(username: string, password: string): TinderAuthInfo {
+        return <TinderAuthInfo>{
+            id: 'hello',
+            token: 'world'
+        };
     }
 }
