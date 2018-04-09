@@ -5,6 +5,7 @@ import * as child_process from 'child_process';
     function createWindow() {
         window = new BrowserWindow({
             backgroundColor: '#ffffff',
+            icon: `${__dirname}/ux/favicon.ico`
         });
     
         window.loadURL(`file://${__dirname}/ux/index.html`);

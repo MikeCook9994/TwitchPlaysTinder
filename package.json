@@ -13,7 +13,10 @@
   },
   "homepage": "https://github.com/MikeCook9994/TwitchPlaysTinder#readme",
   "scripts": {
-    "build": "rm -r ./dist & tsc ./main.ts --outDir ./dist & tsc",
+    "clean": "rm -rf ./dist",
+    "ng-build": "cd ./ux & ng build --base-href ./ & cd ..",
+    "electron-build": "tsc ./main.ts --outDir ./dist & tsc",
+    "build": "npm run clean & npm run electron-build & npm run ng-build",
     "start": "electron ./dist/main.js"
   },
   "dependencies": {
