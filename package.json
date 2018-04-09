@@ -17,7 +17,9 @@
     "ng-build": "cd ./ux & ng build --base-href ./ & cd ..",
     "electron-build": "tsc ./main.ts --outDir ./dist & tsc",
     "build": "npm run clean & npm run electron-build & npm run ng-build",
-    "start": "electron ./dist/main.js"
+    "start": "electron ./dist/main.js",
+    "install-ux": "cd ./ux & npm i & cd ..",
+    "install-all": "npm i & npm run install-ux"
   },
   "dependencies": {
     "electron": "^1.8.3"
