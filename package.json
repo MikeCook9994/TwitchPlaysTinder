@@ -22,7 +22,9 @@
     "install-all": "npm i & npm run install-ux"
   },
   "dependencies": {
-    "electron": "^1.8.3"
+    "@types/express": "^4.11.1",
+    "electron": "^1.8.3",
+    "express": "^4.16.3"
   },
   "devDependencies": {
     "typescript": "~2.5.3"

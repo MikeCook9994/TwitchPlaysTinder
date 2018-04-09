@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import { Observable } from 'rxjs/Observable';
+
 import { TinderAuthInfo } from '../../models/tinderAuthInfo';
 
 @Injectable()
 export class AuthService {
+  private baseUrl = 'localhost:3011';
 
   constructor(
     private httpClient: HttpClient
@@ -20,7 +23,7 @@ export class AuthService {
    * account
    * @memberof AuthService
    */
-  public GetAuthInfo(email: string, password: string): Promise<TinderAuthInfo> {
-    return null;
+  public GetAuthInfo(email: string, password: string): Observable<TinderAuthInfo> {
+    return this.httpClient.get<TinderAuthInfo>(`http://${this.baseUrl}/auth`);
   }
 }
