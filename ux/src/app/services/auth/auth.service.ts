@@ -17,13 +17,11 @@ export class AuthService {
    * Given the e-mail address and password of a Facebook account, retrieves the Tinder app auth token and the user id
    * of the associated Facebook account for authenticating with Tinder via their API.
    *
-   * @param {string} email the e-mail address of the facebook account to get a tinder auth token for
-   * @param {string} password the password of the facebook account to get a tinder auth token for
    * @returns {Promise<TinderAuthInfo>} contains the Tinder auth token and the user id of the associated Facebook user
    * account
    * @memberof AuthService
    */
-  public GetAuthInfo(email: string, password: string): Observable<TinderAuthInfo> {
-    return this.httpClient.get<TinderAuthInfo>(`http://${this.baseUrl}/auth?username=${email}&password=${password}`);
+  public GetAuthInfo(): Observable<TinderAuthInfo> {
+    return this.httpClient.get<TinderAuthInfo>(`http://${this.baseUrl}/auth`);
   }
 }

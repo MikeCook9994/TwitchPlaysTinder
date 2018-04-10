@@ -14,10 +14,11 @@
   "homepage": "https://github.com/MikeCook9994/TwitchPlaysTinder#readme",
   "scripts": {
     "clean": "rm -rf ./dist",
+    "copy-secrets": "cp ./server/app/secrets.json ./dist/server/app/", 
     "ng-build": "cd ./ux & ng build --base-href ./ & cd ..",
-    "electron-build": "tsc ./main.ts --outDir ./dist & tsc",
+    "electron-build": "tsc ./main.ts --outDir ./dist & tsc & npm run copy-secrets",
     "build": "npm run clean & npm run electron-build & npm run ng-build",
-    "start": "electron ./dist/main.js",
+    "start": "cd ./dist & electron ./main.js & cd ..",
     "install-ux": "cd ./ux & npm i & cd ..",
     "install-all": "npm i & npm run install-ux"
   },
