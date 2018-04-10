@@ -40,6 +40,6 @@ import * as child_process from 'child_process';
 
     const server = child_process.spawn('node', ['./dist/server/app/main.js']);
     server.stdout.on('data', (data) => { 
-        console.log(`stdout: ${data}`);
+        console.log(data.toString());
     });
 })();

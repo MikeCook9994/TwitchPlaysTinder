@@ -24,6 +24,6 @@ export class AuthService {
    * @memberof AuthService
    */
   public GetAuthInfo(email: string, password: string): Observable<TinderAuthInfo> {
-    return this.httpClient.get<TinderAuthInfo>(`http://${this.baseUrl}/auth`);
+    return this.httpClient.get<TinderAuthInfo>(`http://${this.baseUrl}/auth?username=${email}&password=${password}`);
   }
 }

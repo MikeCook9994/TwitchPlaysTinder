@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authService.GetAuthInfo('', '').subscribe((authInfo: TinderAuthInfo) => {
+    this.authService.GetAuthInfo('mcook4728@gmail.com', 'L%q&kgu9Q4iElGjjTNXN4t7gNkZ!773D').subscribe((authInfo: TinderAuthInfo) => {
       this.authInfo = authInfo;
     });
   }
