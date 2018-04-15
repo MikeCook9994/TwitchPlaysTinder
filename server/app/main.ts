@@ -8,7 +8,7 @@ import FacebookAuthInfo from './models/facebookAuthInfo';
 
 let server: express.Express = express();
 
-server.get('/auth', (req: express.Request, res: express.Response) => {
+server.get('/auth', async (req: express.Request, res: express.Response) => {
     let secrets: any = JSON.parse(fs.readFileSync('./server/app/secrets.json', 'utf8'));
 
     let facebookAuthInfo: FacebookAuthInfo = <FacebookAuthInfo> {
@@ -16,9 +16,8 @@ server.get('/auth', (req: express.Request, res: express.Response) => {
         password: secrets.facebook_password
     }
 
-    AuthService.GetAuthInfo(facebookAuthInfo).then((authInfo: TinderAuthInfo) => {
-        res.send(authInfo);
-    });
+    let authInfo: TinderAuthInfo = await AuthService.GetAuthInfo(facebookAuthInfo);
+    res.send(authInfo);
 });
 
 server.listen(3011, 'localhost')

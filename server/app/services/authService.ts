@@ -42,47 +42,46 @@ export default class AuthService {
      * @returns {Promise<TinderAuthInfo>} 
      * @memberof AuthService
      */
-    public static GetAuthInfo(facebookAuthInfo: FacebookAuthInfo): Promise<TinderAuthInfo> {
-        return AuthService.GetTinderAppAuthToken(facebookAuthInfo.email, facebookAuthInfo.password).then((authToken: string) => {
-            return AuthService.GetFacebookUserToken(authToken).then((facebookUserId: string) => 
-                <TinderAuthInfo>{
-                    id: facebookUserId,
-                    token: authToken
-                });
-        });
+    public static async GetAuthInfo(facebookAuthInfo: FacebookAuthInfo): Promise<TinderAuthInfo> {
+        let authToken: string = await AuthService.GetTinderAppAuthToken(facebookAuthInfo.email, facebookAuthInfo.password)
+        let facebookUserId: string = await AuthService.GetFacebookUserToken(authToken);
+
+        return <TinderAuthInfo>{
+                id: facebookUserId,
+                token: authToken
+        };
     }
 
-    private static GetTinderAppAuthToken(email: string, password: string): Promise<string> {
-        return openBrowser().then((browser: Browser) => {
-            let page: Page;
-            let token: string = '';
+    private static async GetTinderAppAuthToken(email: string, password: string): Promise<string> {
 
-            return browser.newPage()
-                .then((p: Page) => {
-                    page = p;
-                    return page.goto(this.FACEBOOK_AUTHENTICATION_TOKEN_URL);
-                })
-                .then(() => page.type('input[name=email]', email))
-                .then(() => page.type('input[name=pass]', password))
-                .then(() => page.click('button[name=login]'))
-                .then(() => page.waitForNavigation())
-                .then(() => page.evaluate('window.isResponseFound = false'))
-                .then(() => {
-                    page.on('response', (response: Response) => {
-                        if(response.request().url().match(this.URL_REGEX)) {
-                            response.text().then((body: string) => {
-                                page.removeAllListeners('response');
-                                token = body.match(/access_token=(.+)&/)[1];
-                                page.evaluate('window.isResponseFound = true');
-                            });
-                        }
-                    });
-                })
-                .then(() => page.click('button[name=__CONFIRM__]'))
-                .then(() => page.waitForFunction('window.isResponseFound === true')
-                .then(() => page.close()))
-                .then(() => token);
+        let browser: Browser = await openBrowser();
+        let page: Page = await browser.newPage();
+
+        await page.goto(this.FACEBOOK_AUTHENTICATION_TOKEN_URL);
+        await page.type('input[name=email]', email);
+        await page.type('input[name=pass]', password);
+        await page.click('button[name=login]');
+        await page.waitForNavigation();
+        await page.evaluate('window.isResponseFound = false');
+      
+        let token: string;
+
+        page.on('response', (response: Response) => {
+            if(response.request().url().match(this.URL_REGEX)) {
+                response.text().then((body: string) => {
+                    page.removeAllListeners('response');
+                    token = body.match(/access_token=(.+)&/)[1];
+                    page.evaluate('window.isResponseFound = true');
+                });
+            }
         });
+
+        await page.click('button[name=__CONFIRM__]');
+        await page.waitForFunction('window.isResponseFound === true');
+        await page.close();
+        await browser.close();
+
+        return token;
     }
 
     private static GetFacebookUserToken(token: string): Promise<string> {
