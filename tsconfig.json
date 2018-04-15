@@ -8,6 +8,7 @@
     "include": ["./**/*"],
     "exclude": [
         "./node_modules",
-        "./ux"
+        "./ux",
+        "./server/tests/*"
     ]
 }

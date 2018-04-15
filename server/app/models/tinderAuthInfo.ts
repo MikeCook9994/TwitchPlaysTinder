@@ -1,4 +1,4 @@
-export interface TinderAuthInfo {
+export default interface TinderAuthInfo {
     
     /**
      * the user id of the Facebook account that the auth token belongs to

@@ -1,11 +1,10 @@
 import * as express from 'express';
 import * as fs from 'fs';
 
-import { AuthService } from './services/authService';
+import AuthService from './services/authService';
 
-import { TinderAuthInfo } from './models/tinderAuthInfo';
-import { FacebookAuthInfo } from './models/facebookAuthInfo';
-
+import TinderAuthInfo from './models/tinderAuthInfo';
+import FacebookAuthInfo from './models/facebookAuthInfo';
 
 let server: express.Express = express();
 

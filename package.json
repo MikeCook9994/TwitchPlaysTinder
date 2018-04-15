@@ -14,13 +14,16 @@
   "homepage": "https://github.com/MikeCook9994/TwitchPlaysTinder#readme",
   "scripts": {
     "clean": "rm -rf ./dist",
-    "copy-secrets": "cp ./server/app/secrets.json ./dist/server/app/", 
+    "copy-secrets": "cp ./server/app/secrets.json ./dist/server/app/",
     "ng-build": "cd ./ux & ng build --base-href ./ & cd ..",
     "electron-build": "tsc ./main.ts --outDir ./dist & tsc & npm run copy-secrets",
     "build": "npm run clean & npm run electron-build & npm run ng-build",
     "start": "cd ./dist & electron ./main.js & cd ..",
-    "install-ux": "cd ./ux & npm i & cd ..",
-    "install-all": "npm i & npm run install-ux"
+    "ng-install": "cd ./ux & npm i & cd ..",
+    "install-all": "npm i & npm run ng-install",
+    "electron-test": "jasmine-ts \"./server/tests/**/*.spec.ts",
+    "ng-test": "cd ./ux & ng test & cd ..",
+    "test": "npm run electron-test & npm run ng-test"
   },
   "dependencies": {
     "@types/electron": "^1.6.10",
@@ -32,6 +35,13 @@
     "puppeteer": "^1.2.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.1.2",
+    "@types/jasmine": "^2.8.6",
+    "@types/sinon": "^4.3.1",
+    "chai": "^4.1.2",
+    "jasmine": "^3.1.0",
+    "jasmine-ts": "^0.2.1",
+    "sinon": "^4.5.0",
     "typescript": "~2.5.3"
   }
 }

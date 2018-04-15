@@ -1,4 +1,4 @@
-export interface FacebookAuthInfo {
+export default interface FacebookAuthInfo {
     
     /**
      * the email address of the facebook account to authenticate with
