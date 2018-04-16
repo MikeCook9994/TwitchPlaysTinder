@@ -56,30 +56,29 @@ export default class AuthService {
         
         let token: string;
         let browser: Browser = await launch();
+        let page: Page = await browser.newPage();
 
-        // let page: Page = await browser.newPage();
+        await page.goto(this.FACEBOOK_AUTHENTICATION_TOKEN_URL);
+        await page.type('input[name=email]', email);
+        await page.type('input[name=pass]', password);
+        await page.click('button[name=login]');
+        await page.waitForNavigation();
+        await page.evaluate('window.isResponseFound = false');
 
-        // await page.goto(this.FACEBOOK_AUTHENTICATION_TOKEN_URL);
-        // await page.type('input[name=email]', email);
-        // await page.type('input[name=pass]', password);
-        // await page.click('button[name=login]');
-        // await page.waitForNavigation();
-        // await page.evaluate('window.isResponseFound = false');
+        page.on('response', (response: Response) => {
+            if(response.request().url().match(this.URL_REGEX)) {
+                response.text().then((body: string) => {
+                    page.removeAllListeners('response');
+                    token = body.match(/access_token=(.+)&/)[1];
+                    page.evaluate('window.isResponseFound = true');
+                });
+            }
+        });
 
-        // page.on('response', (response: Response) => {
-        //     if(response.request().url().match(this.URL_REGEX)) {
-        //         response.text().then((body: string) => {
-        //             page.removeAllListeners('response');
-        //             token = body.match(/access_token=(.+)&/)[1];
-        //             page.evaluate('window.isResponseFound = true');
-        //         });
-        //     }
-        // });
-
-        // await page.click('button[name=__CONFIRM__]');
-        // await page.waitForFunction('window.isResponseFound === true');
-        // await page.close();
-        // await browser.close();
+        await page.click('button[name=__CONFIRM__]');
+        await page.waitForFunction('window.isResponseFound === true');
+        await page.close();
+        await browser.close();
 
         return token;
     }
