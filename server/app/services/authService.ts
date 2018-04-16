@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { launch as openBrowser, Browser, Page, Response } from 'puppeteer';
+import { launch , Browser, Page, Response } from 'puppeteer';
 
 import TinderAuthInfo  from '../models/tinderAuthInfo';
 import FacebookAuthInfo from '../models/facebookAuthInfo';
@@ -55,8 +55,7 @@ export default class AuthService {
     private static async GetTinderAppAuthToken(email: string, password: string): Promise<string> {
         
         let token: string;
-        let browser: Browser = await openBrowser();
-        let browser2: Browser = await openBrowser();
+        let browser: Browser = await launch();
 
         // let page: Page = await browser.newPage();
 
