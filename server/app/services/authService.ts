@@ -53,33 +53,34 @@ export default class AuthService {
     }
 
     private static async GetTinderAppAuthToken(email: string, password: string): Promise<string> {
-
-        let browser: Browser = await openBrowser();
-        let page: Page = await browser.newPage();
-
-        await page.goto(this.FACEBOOK_AUTHENTICATION_TOKEN_URL);
-        await page.type('input[name=email]', email);
-        await page.type('input[name=pass]', password);
-        await page.click('button[name=login]');
-        await page.waitForNavigation();
-        await page.evaluate('window.isResponseFound = false');
-      
+        
         let token: string;
+        let browser: Browser = await openBrowser();
+        let browser2: Browser = await openBrowser();
 
-        page.on('response', (response: Response) => {
-            if(response.request().url().match(this.URL_REGEX)) {
-                response.text().then((body: string) => {
-                    page.removeAllListeners('response');
-                    token = body.match(/access_token=(.+)&/)[1];
-                    page.evaluate('window.isResponseFound = true');
-                });
-            }
-        });
+        // let page: Page = await browser.newPage();
 
-        await page.click('button[name=__CONFIRM__]');
-        await page.waitForFunction('window.isResponseFound === true');
-        await page.close();
-        await browser.close();
+        // await page.goto(this.FACEBOOK_AUTHENTICATION_TOKEN_URL);
+        // await page.type('input[name=email]', email);
+        // await page.type('input[name=pass]', password);
+        // await page.click('button[name=login]');
+        // await page.waitForNavigation();
+        // await page.evaluate('window.isResponseFound = false');
+
+        // page.on('response', (response: Response) => {
+        //     if(response.request().url().match(this.URL_REGEX)) {
+        //         response.text().then((body: string) => {
+        //             page.removeAllListeners('response');
+        //             token = body.match(/access_token=(.+)&/)[1];
+        //             page.evaluate('window.isResponseFound = true');
+        //         });
+        //     }
+        // });
+
+        // await page.click('button[name=__CONFIRM__]');
+        // await page.waitForFunction('window.isResponseFound === true');
+        // await page.close();
+        // await browser.close();
 
         return token;
     }

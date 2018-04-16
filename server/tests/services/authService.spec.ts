@@ -16,7 +16,6 @@ import FacebookAuthInfo from '../../app/models/facebookAuthInfo';
 import AuthService from '../../app/services/authService';
 
 
-
 describe('AuthService.GetAuthInfo', () => {
     const fbAuthInfo = <FacebookAuthInfo> {
         email: 'test-email',
@@ -24,9 +23,13 @@ describe('AuthService.GetAuthInfo', () => {
     }
 
     let launchStub: sinon.SinonStub;
+    let pageStub: sinon.SinonStub;
+    let browserStub: sinon.SinonStub;
 
     beforeAll(() => {
-        launchStub = sinon.stub(puppeteer, 'launch').resolves( { newPage: () => {} } );
+        let page: puppeteer.Page = SetupPageStub();
+        let browser: puppeteer.Browser = SetupBrowserStub(page);
+        launchStub = sinon.stub(puppeteer, 'launch').resolves(browser);
     });
 
     it('is a function', () => {
@@ -51,4 +54,24 @@ describe('AuthService.GetAuthInfo', () => {
         expect(launchStub.called).to.be.true;
         expect(launchStub.callCount === 1).to.be.true;
     });
+
+    function SetupPageStub(): puppeteer.Page {
+        let page: puppeteer.Page = <puppeteer.Page>{};
+        page.goto = sinon.stub().resolves(page);
+        page.type = sinon.stub().resolves(page);
+        page.click = sinon.stub().resolves(page);
+        page.waitForNavigation = sinon.stub().resolves(<puppeteer.Response>{});
+        page.evaluate = sinon.stub().resolves({});
+        page.on = sinon.stub().returns(page);
+        page.waitForFunction = sinon.stub().resolves({});
+        page.close = sinon.stub().resolves();
+        return page;
+    }
+
+    function SetupBrowserStub(page: puppeteer.Page): puppeteer.Browser {
+        let browser: puppeteer.Browser = <puppeteer.Browser>{};
+        browser.newPage = sinon.stub().resolves(page);
+        browser.close = sinon.stub();
+        return browser;
+    }
 });
