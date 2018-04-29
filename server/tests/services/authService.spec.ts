@@ -34,17 +34,21 @@ describe('AuthService.GetAuthInfo', () => {
     let pageFake: puppeteer.Page;
     let browserFake: puppeteer.Browser;
 
-    beforeEach(() => {
+    beforeAll(() => {
         pageFake = SetupPageFake();
         browserFake = SetupBrowserFake(pageFake);
         launchStub = sinon.stub(puppeteer, 'launch').resolves(browserFake);
-
         axiosGetStub = sinon.stub(axios, 'get').resolves(fbGraphResponse);
     });
 
+    beforeEach(() => {
+        launchStub.resolves(browserFake);
+        axiosGetStub.resolves(fbGraphResponse);
+    });
+
     afterEach(() => {
-        launchStub.restore();
-        axiosGetStub.restore();
+        launchStub.reset();
+        axiosGetStub.reset();
     });
 
     it('is a function', () => {
@@ -63,13 +67,13 @@ describe('AuthService.GetAuthInfo', () => {
         expect(launchStub.calledOnce, "browser should be launched no more than one time.").to.be.true;
     });
 
-    xit('throws a TinderAuthException is opening the browser fails', async () => {
+    it('throws a TinderAuthException if opening the browser fails', async () => {
         // Arrange
         let expectedException: TinderAuthException;
-        let expectedMessage: string = 'Failed to retrieve facebook app auth code';
+        let expectedMessage: string = 'failed to navigate to authentication page';
 
-        launchStub.restore();
-        launchStub.throws();
+        launchStub.reset();
+        launchStub.rejects();
 
         // Act
         try {
@@ -80,7 +84,7 @@ describe('AuthService.GetAuthInfo', () => {
         }
 
         // Assert
-        expect(expectedException.message).to.equal('Failed to retrieve facebook app auth code');
+        expect(expectedException.message).to.equal('failed to navigate to authentication page');
     });
 
     function SetupPageFake(): puppeteer.Page {

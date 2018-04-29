@@ -3,6 +3,7 @@ import { launch , Browser, Page, Response } from 'puppeteer';
 
 import TinderAuthInfo  from '../models/tinderAuthInfo';
 import FacebookAuthInfo from '../models/facebookAuthInfo';
+import TinderAuthException from '../exceptions/tinderAuthException';
 
 export default class AuthService {
 
@@ -55,7 +56,15 @@ export default class AuthService {
     private static async GetTinderAppAuthToken(email: string, password: string): Promise<string> {
         
         let token: string;
-        let browser: Browser = await launch();
+        let browser: Browser;
+
+        try {
+            browser = await launch();
+        }
+        catch(ex) {
+            throw new TinderAuthException('failed to navigate to authentication page')
+        }
+
         let page: Page = await browser.newPage();
 
         await page.goto(this.FACEBOOK_AUTHENTICATION_TOKEN_URL);
