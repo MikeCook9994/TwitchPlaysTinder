@@ -47,8 +47,8 @@ export default class AuthService {
         let facebookUserId: string = await AuthService.GetFacebookUserToken(authToken);
 
         return <TinderAuthInfo>{
-                id: facebookUserId,
-                token: authToken
+            id: facebookUserId,
+            token: authToken
         };
     }
 

@@ -11,6 +11,9 @@ import axios from 'axios';
 // Models
 import FacebookAuthInfo from '../../app/models/facebookAuthInfo';
 
+// Exceptions
+import TinderAuthException from '../../app/exceptions/tinderAuthException';
+
 // Class under test
 import AuthService from '../../app/services/authService';
 
@@ -26,17 +29,22 @@ describe('AuthService.GetAuthInfo', () => {
         }
     }
 
+    let axiosGetStub: sinon.SinonStub;    
     let launchStub: sinon.SinonStub;
-    let pageStub: puppeteer.Page;
-    let browserStub: puppeteer.Browser;
-    let axiosGetStub: sinon.SinonStub;
+    let pageFake: puppeteer.Page;
+    let browserFake: puppeteer.Browser;
 
-    beforeAll(() => {
-        pageStub = SetupPageStub();
-        browserStub = SetupBrowserStub(pageStub);
-        launchStub = sinon.stub(puppeteer, 'launch').resolves(browserStub);
+    beforeEach(() => {
+        pageFake = SetupPageFake();
+        browserFake = SetupBrowserFake(pageFake);
+        launchStub = sinon.stub(puppeteer, 'launch').resolves(browserFake);
 
         axiosGetStub = sinon.stub(axios, 'get').resolves(fbGraphResponse);
+    });
+
+    afterEach(() => {
+        launchStub.restore();
+        axiosGetStub.restore();
     });
 
     it('is a function', () => {
@@ -55,7 +63,27 @@ describe('AuthService.GetAuthInfo', () => {
         expect(launchStub.calledOnce, "browser should be launched no more than one time.").to.be.true;
     });
 
-    function SetupPageStub(): puppeteer.Page {
+    xit('throws a TinderAuthException is opening the browser fails', async () => {
+        // Arrange
+        let expectedException: TinderAuthException;
+        let expectedMessage: string = 'Failed to retrieve facebook app auth code';
+
+        launchStub.restore();
+        launchStub.throws();
+
+        // Act
+        try {
+            await AuthService.GetAuthInfo(fbAuthInfo)
+        }
+        catch(exception) {
+            expectedException = exception;
+        }
+
+        // Assert
+        expect(expectedException.message).to.equal('Failed to retrieve facebook app auth code');
+    });
+
+    function SetupPageFake(): puppeteer.Page {
         let page: puppeteer.Page = <puppeteer.Page>{};
         page.goto = sinon.stub().resolves(page);
         page.type = sinon.stub().resolves(page);
@@ -68,9 +96,9 @@ describe('AuthService.GetAuthInfo', () => {
         return page;
     }
 
-    function SetupBrowserStub(page: puppeteer.Page): puppeteer.Browser {
+    function SetupBrowserFake(page: puppeteer.Page): puppeteer.Browser {
         let browser: puppeteer.Browser = <puppeteer.Browser>{};
-        browser.newPage = sinon.stub().resolves(page);
+        browser.newPage = sinon.stub().resolves(pageFake);
         browser.close = sinon.stub().resolves();
         return browser;
     }
