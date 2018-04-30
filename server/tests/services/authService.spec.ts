@@ -35,19 +35,26 @@ describe('AuthService.GetAuthInfo', () => {
     let browserFake: puppeteer.Browser;
 
     beforeAll(() => {
-        pageFake = SetupPageFake();
-        browserFake = SetupBrowserFake(pageFake);
-        launchStub = sinon.stub(puppeteer, 'launch').resolves(browserFake);
+        launchStub = sinon.stub(puppeteer, 'launch').resolves(browserFake);        
+        pageFake = CreatePageFake();
+        browserFake = CreateBrowserFake(pageFake);
+
         axiosGetStub = sinon.stub(axios, 'get').resolves(fbGraphResponse);
     });
 
     beforeEach(() => {
         launchStub.resolves(browserFake);
+        SetBrowserFakeDefaultBehavior(browserFake, pageFake);
+        SetPageFakeDefaultBehavior(pageFake);
+
         axiosGetStub.resolves(fbGraphResponse);
     });
 
     afterEach(() => {
         launchStub.reset();
+        ResetBrowserFake(browserFake);
+        ResetPageFake(pageFake);
+
         axiosGetStub.reset();
     });
 
@@ -69,7 +76,7 @@ describe('AuthService.GetAuthInfo', () => {
 
     it('throws a TinderAuthException if opening the browser fails', async () => {
         // Arrange
-        let expectedException: TinderAuthException;
+        let expectedException: Error;
         let expectedMessage: string = 'failed to navigate to authentication page';
 
         launchStub.reset();
@@ -84,26 +91,64 @@ describe('AuthService.GetAuthInfo', () => {
         }
 
         // Assert
+        expect(expectedException).to.be.instanceof(TinderAuthException, 'exception not instance of TinderAuthException');
         expect(expectedException.message).to.equal('failed to navigate to authentication page');
     });
 
-    function SetupPageFake(): puppeteer.Page {
+    function CreatePageFake(): puppeteer.Page {
         let page: puppeteer.Page = <puppeteer.Page>{};
-        page.goto = sinon.stub().resolves(page);
-        page.type = sinon.stub().resolves(page);
-        page.click = sinon.stub().resolves(page);
-        page.waitForNavigation = sinon.stub().resolves(<puppeteer.Response>{});
-        page.evaluate = sinon.stub().resolves({});
-        page.on = sinon.stub().returns(page);
-        page.waitForFunction = sinon.stub().resolves({});
-        page.close = sinon.stub().resolves();
+
+        page.goto = sinon.stub();
+        page.type = sinon.stub();
+        page.click = sinon.stub();
+        page.waitForNavigation = sinon.stub();
+        page.evaluate = sinon.stub();
+        page.on = sinon.stub();
+        page.waitForFunction = sinon.stub();
+        page.close = sinon.stub();
+
+        SetPageFakeDefaultBehavior(page);
         return page;
     }
 
-    function SetupBrowserFake(page: puppeteer.Page): puppeteer.Browser {
+    function SetPageFakeDefaultBehavior(page: puppeteer.Page): void {
+        (page.goto as sinon.SinonStub).resolves(page);
+        (page.type as sinon.SinonStub).resolves(page);
+        (page.click as sinon.SinonStub).resolves(page);
+        (page.waitForNavigation as sinon.SinonStub).resolves(<puppeteer.Response>{});
+        (page.evaluate as sinon.SinonStub).resolves({});
+        (page.on as sinon.SinonStub).returns(page);
+        (page.waitForFunction as sinon.SinonStub).resolves({});
+        (page.close as sinon.SinonStub).resolves();
+    }
+
+    function ResetPageFake(page: puppeteer.Page): void {
+        (page.goto as sinon.SinonStub).reset();
+        (page.type as sinon.SinonStub).reset();
+        (page.click as sinon.SinonStub).reset();
+        (page.waitForNavigation as sinon.SinonStub).reset();
+        (page.evaluate as sinon.SinonStub).reset();
+        (page.on as sinon.SinonStub).reset();
+        (page.waitForFunction as sinon.SinonStub).reset();
+        (page.close as sinon.SinonStub).reset();
+    }
+
+    function CreateBrowserFake(page: puppeteer.Page): puppeteer.Browser {
         let browser: puppeteer.Browser = <puppeteer.Browser>{};
-        browser.newPage = sinon.stub().resolves(pageFake);
-        browser.close = sinon.stub().resolves();
+        browser.newPage = sinon.stub();
+        browser.close = sinon.stub();
+
+        SetBrowserFakeDefaultBehavior(browser, page);
         return browser;
+    }
+
+    function SetBrowserFakeDefaultBehavior(browser: puppeteer.Browser, page: puppeteer.Page): void {
+        (browser.newPage as sinon.SinonStub).resolves(pageFake);
+        (browser.close as sinon.SinonStub).resolves();
+    }
+
+    function ResetBrowserFake(browser: puppeteer.Browser): void {
+        (browser.newPage as sinon.SinonStub).reset();
+        (browser.close as sinon.SinonStub).reset();
     }
 });

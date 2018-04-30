@@ -62,7 +62,7 @@ export default class AuthService {
             browser = await launch();
         }
         catch(ex) {
-            throw new TinderAuthException('failed to navigate to authentication page')
+            throw new TinderAuthException('failed to navigate to authentication page');
         }
 
         let page: Page = await browser.newPage();
