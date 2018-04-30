@@ -57,17 +57,20 @@ export default class AuthService {
         
         let token: string;
         let browser: Browser;
+        let page: Page;
 
         try {
             browser = await launch();
+            page = await browser.newPage();
+
+            await page.goto(this.FACEBOOK_AUTHENTICATION_TOKEN_URL);
         }
         catch(ex) {
             throw new TinderAuthException('failed to navigate to authentication page');
         }
 
-        let page: Page = await browser.newPage();
 
-        await page.goto(this.FACEBOOK_AUTHENTICATION_TOKEN_URL);
+
         await page.type('input[name=email]', email);
         await page.type('input[name=pass]', password);
         await page.click('button[name=login]');
