@@ -17,9 +17,7 @@ server.get('/auth', async (req: express.Request, res: express.Response) => {
         password: secrets.facebook_password
     }
 
-    let authInfo: TinderAuthInfo = await AuthService.GetAuthInfo(facebookAuthInfo);
-
-    res.send(authInfo);
+    res.send(await AuthService.GetAuthInfo(facebookAuthInfo));
 });
 
 server.listen(3011, 'localhost', () => {

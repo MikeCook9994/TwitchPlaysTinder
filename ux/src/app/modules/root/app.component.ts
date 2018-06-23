@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { map, switchMap, flatMap, tap } from 'rxjs/operators';
 
 import { AuthService } from '../../services/auth.service';
 import { TinderService } from '../../services/tinder.service';
@@ -22,11 +22,10 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.authService.GetAuthInfo().subscribe((authInfo: TinderAuthInfo) => {
-            this.authInfo = authInfo;
-            this.tinderService.Authenticate(this.authInfo).subscribe((authResp: any) => {
-                this.xAuthToken = authResp['token'];
-            });
-        });
+        this.authService.GetAuthInfo()
+            .pipe(
+                tap((authInfo: TinderAuthInfo) => this.authInfo = authInfo),
+                flatMap((authInfo: TinderAuthInfo) => this.tinderService.Authenticate(this.authInfo)))            
+            .subscribe((authResp: any) => this.xAuthToken = authResp['token'])
     }
 }
