@@ -20,10 +20,7 @@
     "build": "npm run clean & npm run electron-build & npm run ng-build",
     "start": "cd ./dist & electron ./main.js & cd ..",
     "ng-install": "cd ./ux & npm i & cd ..",
-    "install-all": "npm i & npm run ng-install",
-    "electron-test": "jasmine-ts JASMINE_CONFIG_PATH=./jasmine.json",
-    "ng-test": "cd ./ux & ng test & cd ..",
-    "test": "npm run electron-test & npm run ng-test"
+    "install-all": "npm i & npm run ng-install"
   },
   "dependencies": {
     "@types/electron": "^1.6.10",

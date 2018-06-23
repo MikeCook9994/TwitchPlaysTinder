@@ -66,15 +66,20 @@ export default class AuthService {
             await page.goto(this.FACEBOOK_AUTHENTICATION_TOKEN_URL);
         }
         catch(ex) {
-            throw new TinderAuthException('failed to navigate to authentication page');
+            throw new TinderAuthException(`Failed to navigate to authentication page. ${ex.message}`);
         }
 
 
+        try {
+            await page.type('input[name=email]', email);
+            await page.type('input[name=pass]', password);
+            await page.click('button[name=login]');
+            await page.waitForNavigation();            
+        }
+        catch(ex) {
+            throw new TinderAuthException(`Failed to login to facebook using provided credentials. ${ex.message}`)
+        }
 
-        await page.type('input[name=email]', email);
-        await page.type('input[name=pass]', password);
-        await page.click('button[name=login]');
-        await page.waitForNavigation();
         await page.evaluate('window.isResponseFound = false');
 
         page.on('response', (response: Response) => {
@@ -87,8 +92,15 @@ export default class AuthService {
             }
         });
 
-        await page.click('button[name=__CONFIRM__]');
+        try {
+            await page.click('button[name=__CONFIRM__]');
+        }
+        catch(ex) {
+            throw new TinderAuthException(`Unable to confirm tinder permission access to get token. ${ex}`);
+        }
+
         await page.waitForFunction('window.isResponseFound === true');
+
         await page.close();
         await browser.close();
 
