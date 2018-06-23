@@ -4,7 +4,9 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 
-import { AuthService } from '../../services/auth/auth.service';
+import { AuthService } from '../../services/auth.service';
+import { TinderService } from '../../services/tinder.service';
+
 
 @NgModule({
   declarations: [
@@ -15,7 +17,8 @@ import { AuthService } from '../../services/auth/auth.service';
     HttpClientModule
   ],
   providers: [
-    AuthService
+    AuthService,
+    TinderService
   ],
   bootstrap: [AppComponent]
 })
