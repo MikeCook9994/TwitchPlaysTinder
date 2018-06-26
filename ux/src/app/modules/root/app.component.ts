@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { map, switchMap, flatMap, tap } from 'rxjs/operators';
+import { flatMap, tap } from 'rxjs/operators';
 
 import { AuthService } from '../../services/auth.service';
-import { TinderService } from '../../services/tinder.service';
+import { TinderClientService } from '../../services/tinderClient.service';
 
 import { TinderAuthInfo } from '../../models/tinderAuthInfo';
 
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
-        private tinderService: TinderService
+        private tinderService: TinderClientService
     ) {}
 
     ngOnInit() {

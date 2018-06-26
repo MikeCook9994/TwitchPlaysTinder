@@ -7,13 +7,14 @@ import { tap } from 'rxjs/operators';
 import { TinderAuthInfo } from '../models/tinderAuthInfo';
 
 @Injectable()
-export class TinderService {
-    private static readonly TinderBaseUrl: string = 'https://api.gotinder.com';
+export class TinderClientService {
+    private static readonly TinderBaseUrl: string = 'https://api.gotinder.com/api';
     private static readonly TinderAuthApiPath: string = '/auth';
 
     private static readonly DefaultHeaders: HttpHeaders = new HttpHeaders({
             'Content-Type': 'application/json',
-            'User-Agent': 'Tinder/7.5.3 (iPhone; iOS 10.3.2; Scale/2.00)'
+            'User-Agent': 'Tinder/7.5.3 (iPhone; iOS 10.3.2; Scale/2.00)',
+            'Access-Control-Allow-Origin': '*'
         });
 
     constructor(
@@ -21,9 +22,9 @@ export class TinderService {
     ) { }
 
     public Authenticate(authInfo: TinderAuthInfo): Observable<any> {
-        const url: string = `${TinderService.TinderBaseUrl}${TinderService.TinderAuthApiPath}`;
+        const url: string = `${TinderClientService.TinderBaseUrl}${TinderClientService.TinderAuthApiPath}`;
         return this.httpClient.post(url, authInfo, {
-            headers: TinderService.DefaultHeaders
+            headers: TinderClientService.DefaultHeaders
         });
     }
 }

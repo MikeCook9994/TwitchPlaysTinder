@@ -1,15 +1,28 @@
-import { BrowserWindow, app } from 'electron';
+import { BrowserWindow, app, screen } from 'electron';
 import * as child_process from 'child_process';
 
 (() => {
     function createWindow() {
+        const size = screen.getPrimaryDisplay().workAreaSize;
+        const args = process.argv.slice(1);
+
         window = new BrowserWindow({
             backgroundColor: '#ffffff',
-            icon: `${__dirname}/ux/favicon.ico`
+            icon: `${__dirname}/ux/favicon.ico`,
+            width: size.width,
+            height: size.height
         });
-    
-        window.loadURL(`file://${__dirname}/ux/index.html`);
-    
+        
+        if(args.some(val => val == '--serve')) {
+            require('electron-reload')(__dirname, {
+                electron: require(`${__dirname}/../node_modules/electron`)
+            });
+            window.loadURL(`http://localhost:4200/`);
+        }
+        else {
+            window.loadURL(`file://${__dirname}/ux/index.html`);
+        }
+         
         window.on('closed', function() {
             window = null;
         });
